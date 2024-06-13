@@ -1,49 +1,33 @@
 import pygame
-# definindo cores
+import random
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
+cores = [BLACK, BLUE, GREEN, RED]
 pygame.init()
 screen = pygame.display.set_mode((640, 480))
 pygame.display.set_caption('Game Loop')
-# variáveis da bola
-position_x = 300
-position_y = 200
-velocity_x = 1
+position_x = 500
+position_y = 300
 velocity_y = 1
-# iniciando o loop de jogo
+color1 = random.choice(cores)
+color2 = random.choice(cores)
 while True:
-    # PROCESSAMENTO DE ENTRADA
-    # capturando eventos
     event = pygame.event.poll()
-    # caso o evento QUIT (clicar no x da janela) seja disparado
     if event.type == pygame.QUIT:
-        # saia do loop finalizando o programa
         break
-    # ATUALIZAÇÃO DO JOGO
-    # movendo a bola
-    # A cada repetição a posição da bola aumenta em sua velocidade
-    position_x += velocity_x
     position_y += velocity_y
-    # mudando a direção no eixo x nas bordas
-    # Caso a bola começe a chegar nas bordas da direita ou de baixo, a velocidade será negativa
-    # Caso chegue nas outras bordas, se tornará positiva
-    if position_x > 600:
-        velocity_x = -1
-    elif position_x < 0:
-        velocity_x = 1
-    # mudando a direção no eixo y nas bordas
     if position_y > 440:
         velocity_y = -1
-    elif position_y < 0:
+        color1 = random.choice(cores)
+        color2 = random.choice(cores)
+    elif position_y <= 0:
         velocity_y = 1
-    # DESENHO
-    # preenchendo o fundo com preto
-    # É importante sempre pintar o fundo ou se não ficará o rastro da bola
-    screen.fill(BLACK)
-    # desenhando a bola
-    pygame.draw.ellipse(screen, RED, [position_x, position_y, 40, 40])
-    # atualizando a tela
+        color1 = random.choice(cores)
+        color2 = random.choice(cores)
+    screen.fill(WHITE)
+    pygame.draw.ellipse(screen, color1, [position_x, position_y, 40, 40])
+    pygame.draw.ellipse(screen, color2, [position_x-200, position_y, 40, 40])
     pygame.display.flip()
