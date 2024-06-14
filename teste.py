@@ -1,26 +1,20 @@
-import time
 import pygame
 BLACK = pygame.Color(0, 0, 0)
 WHITE = pygame.Color(255, 255, 255)
 pygame.init()
 screen = pygame.display.set_mode((640, 480))
-pygame.display.set_caption('Velocity')
+pygame.display.set_caption('FPS')
 position_x = 0
-# 100 pixels por segundo
-velocity_x = 100
-# captura o tempo inicial
-ti = time.time()
+# como o relógio do pygame trabalha em milissegundos, dividimos por 1000 para manter os 100 pixels por segundo
+velocity_x = 0.1
+# criamos uma instância do relógio
+clock = pygame.time.Clock()
 while True:
-    # captura o tempo deste ciclo
-    tf = time.time()
-    # calcula o delta
-    dt = (tf - ti)
-    # atribui o tempo final como tempo inicial
-    ti = tf
+    # chamamos o tick do relógio para 30 fps e armazenamos o delta de tempo
+    dt = clock.tick(30)
     event = pygame.event.poll()
     if event.type == pygame.QUIT:
         break
-    # move o quadrado na velocidade média definida
     position_x += velocity_x * dt
     screen.fill(BLACK)
     pygame.draw.rect(screen, WHITE, [position_x, 230, 20, 20])
