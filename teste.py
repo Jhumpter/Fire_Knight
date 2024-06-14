@@ -3,19 +3,31 @@ BLACK = pygame.Color(0, 0, 0)
 WHITE = pygame.Color(255, 255, 255)
 pygame.init()
 screen = pygame.display.set_mode((640, 480))
-pygame.display.set_caption('FPS')
-position_x = 0
-# como o relógio do pygame trabalha em milissegundos, dividimos por 1000 para manter os 100 pixels por segundo
+pygame.display.set_caption('Collision')
+# cria o Rect para o quadrado
+square = pygame.Rect(300, 230, 20, 20)
+# cria o Rect para os pads
+left_pad = pygame.Rect(20, 210, 20, 60)
+right_pad = pygame.Rect(600, 210, 20, 60)
+pads = [left_pad, right_pad]
 velocity_x = 0.1
-# criamos uma instância do relógio
 clock = pygame.time.Clock()
 while True:
-    # chamamos o tick do relógio para 30 fps e armazenamos o delta de tempo
     dt = clock.tick(30)
     event = pygame.event.poll()
     if event.type == pygame.QUIT:
         break
-    position_x += velocity_x * dt
+    # Função move_ip para alterar a posição, diferente de move que retorna uma cópia com posição alterada
+    square.move_ip(velocity_x * dt, 0)
+    # Função collideList(lista):
+    # Se ocorre  colisão retorna o índice
+    # Se não, retorna -1
+    if square.collidelist(pads) >= 0:
+        velocity_x = -velocity_x
     screen.fill(BLACK)
-    pygame.draw.rect(screen, WHITE, [position_x, 230, 20, 20])
+    # desenha o quadrado usando o Rect
+    pygame.draw.rect(screen, WHITE, square)
+    # desenha os pads
+    for pad in pads:
+        pygame.draw.rect(screen, WHITE, pad)
     pygame.display.flip()
